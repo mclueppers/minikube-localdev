@@ -1,0 +1,14 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: alertmanager-main
+  namespace: monitoring
+spec:
+  rules:
+  - host: alertmanager-172-17-0-2.nip.io
+    http:
+      paths:
+      - backend:
+          serviceName: alertmanager-main
+          servicePort: web
+        path: /
