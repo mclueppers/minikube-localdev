@@ -15,7 +15,26 @@ Grab latest minikube [release](https://github.com/kubernetes/minikube/releases) 
 
 
 ```
-minikube start --driver=docker --addons=dashboard --addons=ingress --addons=metrics-server --addons=storage-provisioner --addons=ingress-dns --addons=logviewer --keep-context=true --cpus=6 --memory=8g --disk-size=50g --mount=true --bootstrapper=kubeadm --extra-config=kubelet.authentication-token-webhook=true --extra-config=kubelet.authorization-mode=Webhook --extra-config=scheduler.address=0.0.0.0 --extra-config=controller-manager.address=0.0.0.0 --extra-config=kubelet.read-only-port=10255 --kubernetes-version=1.14.7
+minikube start \
+    --driver=docker \
+    --addons=dashboard \
+    --addons=ingress \
+    --addons=metrics-server \
+    --addons=storage-provisioner \
+    --addons=ingress-dns \
+    --addons=logviewer \
+    --keep-context=true \
+    --cpus=6 \
+    --memory=8g \
+    --disk-size=50g \
+    --mount=true \
+    --bootstrapper=kubeadm \
+    --extra-config=kubelet.authentication-token-webhook=true \
+    --extra-config=kubelet.authorization-mode=Webhook \
+    --extra-config=scheduler.address=0.0.0.0 \
+    --extra-config=controller-manager.address=0.0.0.0 \
+    --extra-config=kubelet.read-only-port=10255 \
+    --kubernetes-version=1.14.7
 ```
 
 ## Install monitoring tools
@@ -36,9 +55,9 @@ Note: `smtp-server` deployment will fail to start if a Secret with username and 
 
 Once Prometheus and Grafana boot up you can access them at:
 
-* http://grafana-172-17-0-2.nip.io
-* http://prometheus-172-17-0-2.nip.io
-* http://alertmanager-172-17-0-2.nip.io
+* http://grafana-172-17-0-2.nip.io (no auth required)
+* http://prometheus-172-17-0-2.nip.io (admin:admin)
+* http://alertmanager-172-17-0-2.nip.io (no auth required)
 
 ## Install Calico
 
@@ -142,7 +161,16 @@ Remember to replace `$USERNAME` and `$PASSWORD` with correct credentials for you
 ### Create first ArgoCD application
 
 ```
-argocd app create hello-world --repo https://stefanprodan.github.io/podinfo --helm-chart podinfo --revision 3.2.0 --dest-namespace default --dest-server https://kubernetes.default.svc --helm-set ingress.enabled=true --helm-set ingress.path=/ --helm-set 'ingress.hosts[0]=helloworld-172-17-0-2.nip.io' --helm-set replicaCount=2
+argocd app create hello-world \
+    --repo https://stefanprodan.github.io/podinfo \
+    --helm-chart podinfo \
+    --revision 3.2.0 \
+    --dest-namespace default \
+    --dest-server https://kubernetes.default.svc \
+    --helm-set ingress.enabled=true \
+    --helm-set ingress.path=/ \
+    --helm-set 'ingress.hosts[0]=helloworld-172-17-0-2.nip.io' \
+    --helm-set replicaCount=2
 ```
 
 ### Sync ArgoCD application
